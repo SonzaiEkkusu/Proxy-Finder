@@ -69,7 +69,6 @@ jobs:
         mkdir -p tools/termux
         cp linux-* tools/linux/
         cp termux-* tools/termux/
-        cd repo
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add tools/linux/
