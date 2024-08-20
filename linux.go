@@ -34,7 +34,7 @@ var (
 	defaultPort  = flag.Int("port", 443, "Port")                                                         // Port
 	maxThreads   = flag.Int("max", 100, "Jumlah maksimum goroutine permintaan bersamaan")                // Jumlah maksimum goroutine
 	speedTest    = flag.Int("speedtest", 5, "Jumlah goroutine uji kecepatan unduh, setel ke 0 untuk menonaktifkan uji kecepatan") // Jumlah goroutine uji kecepatan unduh
-	speedTestURL = flag.String("url", "speed.cloudflare.com/__down?bytes=500000000", "URL file uji kecepatan") // URL file uji kecepatan
+	speedTestURL = flag.String("url", "speed.cloudflare.com/__down?bytes=50000000", "URL file uji kecepatan") // URL file uji kecepatan
 	enableTLS    = flag.Bool("tls", true, "Apakah mengaktifkan TLS")                                     // Apakah mengaktifkan TLS
 )
 
