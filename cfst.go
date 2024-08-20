@@ -9,8 +9,8 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/XIU2/CloudflareSpeedTest/tree/master/task"
-	"github.com/XIU2/CloudflareSpeedTest/tree/master/utils"
+	"github.com/SonzaiEkkusu/Proxy-Finder/task"
+	"github.com/SonzaiEkkusu/Proxy-Finder/utils"
 )
 
 var (
