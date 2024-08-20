@@ -338,3 +338,102 @@ func main() {
 			writer.Write([]string{res.result.ip, strconv.Itoa(res.result.port), strconv.FormatBool(*enableTLS), res.result.dataCenter, res.result.region, res.result.city, res.result.latency})
 		}
 	}
+
+	writer.Flush()
+	// Membersihkan output
+	fmt.Print("\033[2J")
+	fmt.Printf("Berhasil menulis hasil ke file %s, memakan waktu %d detik\n", *outFile, time.Since(startTime)/time.Second)
+}
+
+// Membaca alamat IP dari file
+func readIPs(File string) ([]string, error) {
+	file, err := os.Open(File)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	var ips []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		ipAddr := scanner.Text()
+		// Memeriksa apakah alamat IP dalam format CIDR
+		if strings.Contains(ipAddr, "/") {
+			ip, ipNet, err := net.ParseCIDR(ipAddr)
+			if err != nil {
+				fmt.Printf("Tidak dapat mengurai IP dalam format CIDR: %v\n", err)
+				continue
+			}
+			for ip := ip.Mask(ipNet.Mask); ipNet.Contains(ip); inc(ip) {
+				ips = append(ips, ip.String())
+			}
+		} else {
+			ips = append(ips, ipAddr)
+		}
+	}
+	return ips, scanner.Err()
+}
+
+// Implementasi fungsi inc untuk increment alamat IP
+func inc(ip net.IP) {
+	for j := len(ip) - 1; j >= 0; j-- {
+		ip[j]++
+		if ip[j] > 0 {
+			break
+		}
+	}
+}
+
+// Fungsi uji kecepatan
+func getDownloadSpeed(ip string) float64 {
+	var protocol string
+	if *enableTLS {
+		protocol = "https://"
+	} else {
+		protocol = "http://"
+	}
+	speedTestURL := protocol + *speedTestURL
+	// Membuat permintaan
+	req, _ := http.NewRequest("GET", speedTestURL, nil)
+	req.Header.Set("User-Agent", "Mozilla/5.0")
+
+	// Membuat koneksi TCP
+	dialer := &net.Dialer{
+		Timeout:   timeout,
+		KeepAlive: 0,
+	}
+	conn, err := dialer.Dial("tcp", net.JoinHostPort(ip, strconv.Itoa(*defaultPort)))
+	if err != nil {
+		return 0
+	}
+	defer conn.Close()
+
+	fmt.Printf("Sedang menguji IP %s port %s\n", ip, strconv.Itoa(*defaultPort))
+	startTime := time.Now()
+	// Membuat klien HTTP
+	client := http.Client{
+		Transport: &http.Transport{
+			Dial: func(network, addr string) (net.Conn, error) {
+				return conn, nil
+			},
+		},
+		// Menetapkan waktu maksimum pengujian per IP menjadi 5 detik
+		Timeout: 5 * time.Second,
+	}
+	// Mengirim permintaan
+	req.Close = true
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Printf("Pengujian kecepatan IP %s port %s tidak valid\n", ip, strconv.Itoa(*defaultPort))
+		return 0
+	}
+	defer resp.Body.Close()
+
+	// Menyalin body respons ke /dev/null dan menghitung kecepatan unduh
+	written, _ := io.Copy(io.Discard, resp.Body)
+	duration := time.Since(startTime)
+	speed := float64(written) / duration.Seconds() / 1024
+
+	// Menampilkan hasil
+	fmt.Printf("IP %s port %s kecepatan unduh %.0f kB/s\n", ip, strconv.Itoa(*defaultPort), speed)
+	return speed
+}
