@@ -1,4 +1,4 @@
-name: Build Go Applications
+name: Build CFST
 
 on:
   workflow_dispatch:
