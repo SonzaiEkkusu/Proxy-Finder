@@ -2,5 +2,5 @@
 
 # Linux
 ```bash
-curl -sSL https://github.com/SonzaiEkkusu/Proxy-Finder/finder.sh -o finder.sh && chmod +x finder.sh && bash finder.sh
+curl -sSL https://github.com/SonzaiEkkusu/Proxy-Finder/raw/main/finder.sh -o finder.sh && chmod +x finder.sh && bash finder.sh
 ```
