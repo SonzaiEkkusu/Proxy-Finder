@@ -122,7 +122,7 @@ fi
 
 fdip(){
 if [ ! -f cfcdnip ]; then
-curl -L -o cfcdnip -# --retry 2 https://github.com/SonzaiEkkusu/Proxy-Finder/raw/main/tools/linux/linux-$cpu
+curl -L -o cfcdnip -# --retry 2 https://github.com/SonzaiEkkusu/Proxy-Finder/raw/main/tools/linux/cfst/linux-$cpu
 chmod +x cfcdnip
 curl -sSLO https://mirror.ghproxy.com/https://raw.githubusercontent.com/SonzaiEkkusu/Proxy-Finder/main/locations.json
 fi
@@ -247,7 +247,7 @@ cat cdnIP.csv
 }
 
 rmrf(){
-rm -rf txt txt.zip ip.txt ipv6.txt cfcdnip result.csv cdnIP.csv a.csv b.csv ip.csv locations.json
+rm -rf txt txt.zip ip.txt ipv6.txt cfcdnip result.csv cdnIP.csv a.csv b.csv ip.csv locations.json finder.sh
 }
 
 echo "------------------------------------------------------"
