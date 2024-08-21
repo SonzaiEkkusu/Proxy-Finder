@@ -211,7 +211,7 @@ rm -rf cdnIP.csv b.csv a.csv
 awk -F ',' 'NR>1 && NR<=101 {print $1}' result.csv > a.csv
 while IFS= read -r ip_address; do
 UA_Browser="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36"
-response=$(curl -s --user-agent "${UA_Browser}" "https://api.ip.sb/geoip/$ip_address" -k | jq -r '"Organization: \(.organization)\nCountry Code: \(.country_code)"')
+response=$(curl -s --user-agent "${UA_Browser}" "https://api.ip.sb/geoip/$ip_address" -k | awk -F "country_code" '{print $2}' | awk -F'":"|","|"' '{print $2}')
 if [ $? -eq 0 ]; then
 echo "Daerah IP $ip_address adalah: $response" | tee -a b.csv
 else
