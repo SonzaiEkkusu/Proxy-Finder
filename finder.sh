@@ -7,8 +7,8 @@ check_and_install() {
         if [ "$os_type" == "Darwin" ]; then
             brew install $1
         else
-            sudo apt-get update
-            sudo apt-get install -y $1
+            apt update
+            apt install -y $1
         fi
     }
 }
