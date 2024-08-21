@@ -89,7 +89,7 @@ if [ -z $menu ]; then
 elif [ "$menu" == "1" ];then
 speedtestrul
 [[ $point =~ 2053|2083|2087|2096|8443|443 ]] && htp=https || htp=http
-./cfcdnip -tp $point -url $htp://$URL -sl 2 -tl 250 -dn 5
+./cfcdnip -tp $point -url $htp://$URL -sl 2 -tl 250 -dn 10
 else 
 exit
 fi
@@ -101,7 +101,7 @@ if [ -z $menu ]; then
 elif [ "$menu" == "1" ];then
 speedtestrul
 [[ $point =~ 2053|2083|2087|2096|8443|443 ]] && htp=https || htp=http
-./cfcdnip -tp $point -url $htp://$URL -sl 2 -tl 250 -dn 5
+./cfcdnip -tp $point -url $htp://$URL -sl 2 -tl 250 -dn 10
 else 
 exit
 fi
@@ -113,7 +113,7 @@ if [ -z $menu ]; then
 elif [ "$menu" == "1" ];then
 speedtestrul
 [[ $point =~ 2053|2083|2087|2096|8443|443 ]] && htp=https || htp=http
-./cfcdnip -tp $point -url $htp://$URL -sl 2 -tl 250 -dn 5
+./cfcdnip -tp $point -url $htp://$URL -sl 2 -tl 250 -dn 10
 else 
 exit
 fi
@@ -164,7 +164,7 @@ if [ -z $menu ]; then
 elif [ "$menu" == "1" ];then
 speedtestrul
 [[ $point =~ 2053|2083|2087|2096|8443|443 ]] && htp=https || htp=http
-./cfcdnip -tp $point -url $htp://$URL -sl 2 -tl 250 -dn 5
+./cfcdnip -tp $point -url $htp://$URL -sl 2 -tl 250 -dn 10
 else 
 exit
 fi
@@ -219,9 +219,9 @@ echo "Tidak dapat memperoleh informasi daerah untuk IP $ip_address" | tee -a b.c
 fi
 sleep 1
 done < "a.csv"
-grep 'SG' b.csv | head -n 100 >> cdnIP.csv
-grep 'US' b.csv | head -n 100 >> cdnIP.csv
-grep 'ID' b.csv | head -n 100 >> cdnIP.csv
+grep 'SG' b.csv | head -n 10 >> cdnIP.csv
+grep 'US' b.csv | head -n 10 >> cdnIP.csv
+grep 'ID' b.csv | head -n 10 >> cdnIP.csv
 echo
 echo "IP proxy terbaik di daerah anda adalah sebagai berikut:"
 cat cdnIP.csv
@@ -230,15 +230,15 @@ cat cdnIP.csv
 ipcdn2(){
 rm -rf cdnIP.csv
 {
-  grep 'SIN' ip.csv | head -n 100
+  grep 'SIN' ip.csv | head -n 10
   echo
-  grep 'LHR' ip.csv | head -n 100
+  grep 'LHR' ip.csv | head -n 10
   echo
-  grep 'SJC' ip.csv | head -n 100
+  grep 'SJC' ip.csv | head -n 10
   echo
-  grep 'CGK' ip.csv | head -n 100
+  grep 'CGK' ip.csv | head -n 10
   echo
-  grep 'HLP' ip.csv | head -n 100
+  grep 'HLP' ip.csv | head -n 10
   echo
 } >> cdnIP.csv
 echo
